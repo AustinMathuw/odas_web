@@ -179,24 +179,19 @@ const RecordingsModel = new Vue({
 })
 
 // Changing Workspace
-const changeWorkspace = function() {
+const changeWorkspace = async function() {
   console.log("Changing workspace...")
 
-  dialog.showOpenDialog(
-    { properties: ['openDirectory'], title: 'Chooser workspace folder'},
-      function (files) {
+  let files = await dialog.showOpenDialog({properties: ['openDirectory'], title: 'Chooser workspace folder'});
+  if(files) {
+    let path = files.filePaths[0]
+    RecordingsModel.workspacePath = path
+    localStorage.workspacePath = path
+    createList(path)
 
-        if(files) {
-
-          let path = files[0]
-          RecordingsModel.workspacePath = path
-          localStorage.workspacePath = path
-          createList(path)
-
-          ipcRenderer.send('stop-recording')
-          ipcRenderer.send('start-recording', path)
-        }
-  })
+    ipcRenderer.send('stop-recording')
+    ipcRenderer.send('start-recording', path)
+  }
 }
 
 // Create file list

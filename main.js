@@ -24,6 +24,7 @@ function createWindow () {
     webPreferences: {
       webgl: true,
       nodeIntegration : true,
+      nodeIntegrationInWorker: true,
       contextIsolation: false,
       enableRemoteModule: true
     },

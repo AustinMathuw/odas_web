@@ -34,7 +34,10 @@ function createWindow () {
         recordingsWindow = new BrowserWindow({
             width: 900, height: 700,
             webPreferences: {
-                nodeIntegration : true
+                nodeIntegration : true,
+                nodeIntegrationInWorker: true,
+                contextIsolation: false,
+                enableRemoteModule: true
             },
             show:false
         });
