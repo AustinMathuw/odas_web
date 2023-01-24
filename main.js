@@ -1,4 +1,5 @@
 const electron = require('electron')
+require('@electron/remote/main').initialize()
 
 // Module to control application life.
 const app = electron.app
@@ -21,13 +22,14 @@ function createWindow () {
     width: 1200,
     height: 800,
     webPreferences: {
-              webgl: true,
-              nodeIntegration : true
+      webgl: true,
+      nodeIntegration : true,
+      contextIsolation: false,
+      enableRemoteModule: true
     },
     icon: path.join(__dirname, 'resources/images/introlab_icon.png'),
     show: false
   })
-
 
   // and load the index.html of the app.
   odasStudio.mainWindow.loadURL(url.format({
@@ -74,6 +76,10 @@ app.on('activate', function () {
   if (odasStudio.mainWindow === null) {
     createWindow()
   }
+})
+
+app.on('browser-window-created', (_, window) => {
+  require("@electron/remote/main").enable(window.webContents)
 })
 
 // In this file you can include the rest of your app's specific main process

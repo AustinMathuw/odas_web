@@ -142,28 +142,22 @@ var systemMonitor = new Vue({
 var si = require('systeminformation');
 var ip = require('ip');
 
-function updateSi() { // Gather params
+async function updateSi() { // Gather params
 
-    var sysInfo = {cpu:0,mem:0,temp:0};
-
-    si.currentLoad(function(data) {
-        sysInfo.cpu = data.currentload;
-
-        si.mem(function(data) {
-            sysInfo.mem = (data.active/data.total)*100;
-
-            si.cpuTemperature(function(data) {
-                sysInfo.temp = data.main;
-
-                systemMonitor.system.cpu = sysInfo.cpu.toPrecision(3).toString() + ' %';
-                systemMonitor.system.mem = sysInfo.mem.toPrecision(2).toString() + ' %';
-                systemMonitor.system.temp = sysInfo.temp.toPrecision(3).toString() + ' °C';
-                systemMonitor.system.ip = ip.address();
-
-            });
-        });
+    await Promise.all(
+        [
+            si.currentLoad(),
+            si.mem(),
+            si.cpuTemperature()
+        ]
+    ).then((data) => {
+        systemMonitor.system = {
+            cpu: (data[0].currentLoad ? data[0].currentLoad.toPrecision(3).toString() + ' %' : "Unknown"),
+            mem: ((data[1].active && data[1].total) ? ((data[1].active/data[1].total)*100).toPrecision(3).toString() + ' %' : "Unknown"),
+            temp: (data[2].main ? data[2].main.toPrecision(3).toString() + ' °C' : "Unknown"),
+            ip: ip.address()
+        }
     });
-
 }
 
 // Schedule update

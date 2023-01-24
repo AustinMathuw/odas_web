@@ -1,6 +1,7 @@
 const fs = require('fs');
 const ipcRenderer = require('electron').ipcRenderer;
-const dialog = require('electron').remote.dialog;
+const dialog = require('@electron/remote').dialog;
+require("@electron/remote/main").enable(window);
 
 /*
  * Model for UI data

@@ -3,8 +3,9 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 const info = require('wav-file-info');
-const dialog = require('electron').remote.dialog;
+const dialog = require('@electron/remote').dialog;
 const speechToText = require('./../resources/js/speech-to-text.js');
+require("@electron/remote/main").enable(window);
 
 // Fuzzy recording class
 class FuzzyRecording {

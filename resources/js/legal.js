@@ -1,6 +1,7 @@
 const electron = require('electron')
 
-const BrowserWindow = electron.remote.BrowserWindow
+const BrowserWindow = require('@electron/remote').BrowserWindow;
+require("@electron/remote/main").enable(window);
 
 const path = require('path')
 const url = require('url')

@@ -2,7 +2,8 @@
  * ODAS Launcher
  */
 
-const dialog = require('electron').remote.dialog
+const dialog = require('@electron/remote').dialog
+require("@electron/remote/main").enable(window);
 
 const core_path_field = document.getElementById('odas-core-path')
 const config_path_field = document.getElementById('odas-config-path')
